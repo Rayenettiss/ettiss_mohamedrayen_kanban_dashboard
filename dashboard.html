@@ -3,9 +3,176 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>flowBoard</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    
+    <main>
+        <nav>
+            <img src="assets/images/logo.jpg" alt="flowBoard Logo" class="logo">
+            <h3>Menu</h3>
+            <ul class="nav-links">
+                <li class="active" ><a href="#"><img src="assets/icons/dashboard.png" alt=""> <p>Dashboard</p></a></li>
+                <li><a href="#"><img src="assets/icons/tasks.png" alt=""> Tasks</a></li>
+                <li><a href="#"><img src="assets/icons/project-management.png" alt=""> Projects</a></li>
+                <li><a href="#"><img src="assets/icons/teams.png" alt=""> Teams</a></li>
+            <hr>
+            <br>
+                <li><a href="#"><img src="assets/icons/settings.png" alt=""> Settings</a></li>
+                <li><a href="#"><img src="assets/icons/help.png" alt=""> Help</a></li>
+                <li><a href="#"><img src="assets/icons/logout.png" alt=""> Logout</a></li>
+            </ul>
+
+        </nav>
+
+    <section class="main-content">
+        <header>
+            <div class="search">
+                <input type="text" placeholder="Search...">
+                <img src="assets/icons/search.png" alt="Search Icon">
+            </div>
+            <div class="header-right">
+                <img src="assets/icons/email.png" alt="Email">
+                <img src="assets/icons/notification.png" alt="Notifications">
+                <div class="profile">
+                    <img src="assets/icons/user-avatar.png" alt="User Avatar">
+                    <div>
+                        <p>John Doe</p>
+                        <span>Project Manager</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <section class="dashboard">
+            <div class="dashboard-header">
+                <div class="right">
+                    <h2>
+                        Dashboard
+                    </h2>
+                    <p>Plan, organize, and track your projects efficiently.</p>
+                </div>
+                <div class="left">
+                    <button class="btn-primary">Add Project</button>
+                    <button class="btn-secondary">Import Data</button>
+                </div>
+            </div>
+            <div class="cards">                            
+                <div class="card card1">
+                    <h4>Total Projects</h4>
+                    <h2>24</h2>
+                    <p><span>5 <img src="assets/icons/up-arrow.png" alt=""></span> Increase from last month</p>
+                </div>
+                <div class="card card2">
+                    <h4>Ended Projects</h4>
+                    <h2>10</h2>
+                    <p><span>6 <img src="assets/icons/up-arrow.png" alt=""></span> Increase from last month</p>
+                </div>
+                <div class="card card3">
+                    <h4>Running Projects</h4>
+                    <h2>14</h2>
+                    <p><span>2 <img src="assets/icons/up-arrow.png" alt=""></span> Increase from last month</p>
+                </div>
+                <div class="card card4">
+                    <h4>Pending Projects</h4>
+                    <h2>2</h2>
+                    <p>On discussion</p>
+                </div>
+                <div class="card card5">
+                    <h4>Project Analytics</h4>
+                    <img src="assets/images/analytics-chart.png" alt="Analytics Chart">
+                </div>
+                <div class="card card6">
+                    <h4>Reminders</h4>
+                    <h3>Meeting with Arc Company</h3>
+                    <p>Time : 10:00 AM - 11:00 AM</p>
+                    <button class="btn-primary">Start Meeting</button>
+                </div>
+                <div class="card card7">
+                    <div class="card-header">
+                        <h4>Project </h4>
+                        <button class="btn-secondary">+ New</button>
+                    </div>
+                    <div class="profile">
+                        <img src="assets/icons/user-avatar.png" alt="User Avatar">
+                        <div>
+                            <p>John Doe</p>
+                            <span>Project Manager</span>
+                        </div>
+                    </div>
+                    <div class="profile">
+                        <img src="assets/icons/user-avatar.png" alt="User Avatar">
+                        <div>
+                            <p>John Doe</p>
+                            <span>Project Manager</span>
+                        </div>
+                    </div>
+                    <div class="profile">
+                        <img src="assets/icons/user-avatar.png" alt="User Avatar">
+                        <div>
+                            <p>John Doe</p>
+                            <span>Project Manager</span>
+                        </div>
+                    </div>
+                    <div class="profile">
+                        <img src="assets/icons/user-avatar.png" alt="User Avatar">
+                        <div>
+                            <p>John Doe</p>
+                            <span>Project Manager</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card card8">
+                    <div class="card-header">
+                        <h4>Team Collaboration</h4>
+                        <button class="btn-secondary">+ Add Member</button>
+                    </div>
+                    <div class="profile">
+                        <img src="assets/icons/user-avatar.png" alt="User Avatar">
+                        <div>
+                            <p>John Doe</p>
+                            <span>Project Manager</span>
+                        </div>
+                    </div>
+                    <div class="profile">
+                        <img src="assets/icons/user-avatar.png" alt="User Avatar">
+                        <div>
+                            <p>John Doe</p>
+                            <span>Project Manager</span>
+                        </div>
+                    </div>
+                    <div class="profile">
+                        <img src="assets/icons/user-avatar.png" alt="User Avatar">
+                        <div>
+                            <p>John Doe</p>
+                            <span>Project Manager</span>
+                        </div>
+                    </div>
+                    <div class="profile">
+                        <img src="assets/icons/user-avatar.png" alt="User Avatar">
+                        <div>
+                            <p>John Doe</p>
+                            <span>Project Manager</span>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="card card10">
+                    <h4>Time Tracking</h4>
+                    <h2>01:24:36</h2>
+                    <div>
+                        <img src="assets/icons/play-button.png" alt="">
+                        <img src="assets/icons/pause.png" alt="">
+                        <img src="assets/icons/rectangle-svgrepo-com.svg" alt="">
+                    </div>
+                </div>
+                <div class="card card12">
+                    <h4>Project Progress</h4>
+                    <img src="assets/images/project-progress.png" alt="Project Progress">
+                </div>
+            </div>
+        </section>
+    </section>
+    </main>
 </body>
 </html>
