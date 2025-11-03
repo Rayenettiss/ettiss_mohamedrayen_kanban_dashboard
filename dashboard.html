@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>flowBoard</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="script.js"></script>
 </head>
 <body>
     <main>
@@ -12,10 +13,10 @@
             <img src="assets/images/logo.jpg" alt="flowBoard Logo" class="logo">
             <h3>Menu</h3>
             <ul class="nav-links">
-                <li class="active" ><a href="#"><img src="assets/icons/dashboard.png" alt=""> <p>Dashboard</p></a></li>
-                <li><a href="#"><img src="assets/icons/tasks.png" alt=""> Tasks</a></li>
-                <li><a href="#"><img src="assets/icons/project-management.png" alt=""> Projects</a></li>
-                <li><a href="#"><img src="assets/icons/teams.png" alt=""> Teams</a></li>
+                <li class="active"><a href="#dashboard"><img src="assets/icons/dashboard.png" alt=""> <p>Dashboard</p></a></li>
+                <li><a href="#tasks"><img src="assets/icons/tasks.png" alt=""> Tasks</a></li>
+                <li><a href="#projects"><img src="assets/icons/project-management.png" alt=""> Projects</a></li>
+                <li><a href="#teams"><img src="assets/icons/teams.png" alt=""> Teams</a></li>
             <hr>
             <br>
                 <li><a href="#"><img src="assets/icons/settings.png" alt=""> Settings</a></li>
@@ -24,155 +25,325 @@
             </ul>
 
         </nav>
-
-    <section class="main-content">
-        <header>
-            <div class="search">
-                <input type="text" placeholder="Search...">
-                <img src="assets/icons/search.png" alt="Search Icon">
-            </div>
-            <div class="header-right">
-                <img src="assets/icons/email.png" alt="Email">
-                <img src="assets/icons/notification.png" alt="Notifications">
-                <div class="profile">
-                    <img src="assets/icons/user-avatar.png" alt="User Avatar">
-                    <div>
-                        <p>John Doe</p>
-                        <span>Project Manager</span>
+        <div class="content">
+            <section class="main-content visible" id="dashboard">
+                <div class="dashboard-header">
+                    <div class="search">
+                        <input type="text" placeholder="Search...">
+                        <img src="assets/icons/search.png" alt="Search Icon">
                     </div>
-                </div>
-            </div>
-        </header>
-        <section class="dashboard">
-            <div class="dashboard-header">
-                <div class="right">
-                    <h2>
-                        Dashboard
-                    </h2>
-                    <p>Plan, organize, and track your projects efficiently.</p>
-                </div>
-                <div class="left">
-                    <button class="btn-primary">Add Project</button>
-                    <button class="btn-secondary">Import Data</button>
-                </div>
-            </div>
-            <div class="cards">                            
-                <div class="card card1">
-                    <h4>Total Projects</h4>
-                    <h2>24</h2>
-                    <p><span>5 <img src="assets/icons/up-arrow.png" alt=""></span> Increase from last month</p>
-                </div>
-                <div class="card card2">
-                    <h4>Ended Projects</h4>
-                    <h2>10</h2>
-                    <p><span>6 <img src="assets/icons/up-arrow.png" alt=""></span> Increase from last month</p>
-                </div>
-                <div class="card card3">
-                    <h4>Running Projects</h4>
-                    <h2>14</h2>
-                    <p><span>2 <img src="assets/icons/up-arrow.png" alt=""></span> Increase from last month</p>
-                </div>
-                <div class="card card4">
-                    <h4>Pending Projects</h4>
-                    <h2>2</h2>
-                    <p>On discussion</p>
-                </div>
-                <div class="card card5">
-                    <h4>Project Analytics</h4>
-                    <img src="assets/images/analytics-chart.png" alt="Analytics Chart">
-                </div>
-                <div class="card card6">
-                    <h4>Reminders</h4>
-                    <h3>Meeting with Arc Company</h3>
-                    <p>Time : 10:00 AM - 11:00 AM</p>
-                    <button class="btn-primary">Start Meeting</button>
-                </div>
-                <div class="card card7">
-                    <div class="card-header">
-                        <h4>Project </h4>
-                        <button class="btn-secondary">+ New</button>
-                    </div>
-                    <div class="profile">
-                        <img src="assets/icons/user-avatar.png" alt="User Avatar">
-                        <div>
-                            <p>John Doe</p>
-                            <span>Project Manager</span>
-                        </div>
-                    </div>
-                    <div class="profile">
-                        <img src="assets/icons/user-avatar.png" alt="User Avatar">
-                        <div>
-                            <p>John Doe</p>
-                            <span>Project Manager</span>
-                        </div>
-                    </div>
-                    <div class="profile">
-                        <img src="assets/icons/user-avatar.png" alt="User Avatar">
-                        <div>
-                            <p>John Doe</p>
-                            <span>Project Manager</span>
-                        </div>
-                    </div>
-                    <div class="profile">
-                        <img src="assets/icons/user-avatar.png" alt="User Avatar">
-                        <div>
-                            <p>John Doe</p>
-                            <span>Project Manager</span>
+                    <div class="header-right">
+                        <img src="assets/icons/email.png" alt="Email">
+                        <img src="assets/icons/notification.png" alt="Notifications">
+                        <div class="profile">
+                            <img src="assets/icons/user-avatar.png" alt="User Avatar">
+                            <div>
+                                <p>John Doe</p>
+                                <span>Project Manager</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-                
-                <div class="card card8">
-                    <div class="card-header">
-                        <h4>Team Collaboration</h4>
-                        <button class="btn-secondary">+ Add Member</button>
-                    </div>
-                    <div class="profile">
-                        <img src="assets/icons/user-avatar.png" alt="User Avatar">
-                        <div>
-                            <p>John Doe</p>
-                            <span>Project Manager</span>
+                <section class="dashboard">
+                    <div class="dashboard-header">
+                        <div class="right">
+                            <h2>
+                                Dashboard
+                            </h2>
+                            <p>Plan, organize, and track your projects efficiently.</p>
+                        </div>
+                        <div class="left">
+                            <button class="btn-primary">Add Project</button>
+                            <button class="btn-secondary">Import Data</button>
                         </div>
                     </div>
-                    <div class="profile">
-                        <img src="assets/icons/user-avatar.png" alt="User Avatar">
-                        <div>
-                            <p>John Doe</p>
-                            <span>Project Manager</span>
+                    <div class="cards">                            
+                        <div class="card card1">
+                            <h4>Total Projects</h4>
+                            <h2>24</h2>
+                            <p><span>5 <img src="assets/icons/up-arrow.png" alt=""></span> Increase from last month</p>
+                        </div>
+                        <div class="card card2">
+                            <h4>Ended Projects</h4>
+                            <h2>10</h2>
+                            <p><span>6 <img src="assets/icons/up-arrow.png" alt=""></span> Increase from last month</p>
+                        </div>
+                        <div class="card card3">
+                            <h4>Running Projects</h4>
+                            <h2>14</h2>
+                            <p><span>2 <img src="assets/icons/up-arrow.png" alt=""></span> Increase from last month</p>
+                        </div>
+                        <div class="card card4">
+                            <h4>Pending Projects</h4>
+                            <h2>2</h2>
+                            <p>On discussion</p>
+                        </div>
+                        <div class="card card5">
+                            <h4>Project Analytics</h4>
+                            <img src="assets/images/analytics-chart.png" alt="Analytics Chart">
+                        </div>
+                        <div class="card card6">
+                            <h4>Reminders</h4>
+                            <h3>Meeting with Arc Company</h3>
+                            <p>Time : 10:00 AM - 11:00 AM</p>
+                            <button class="btn-primary">Start Meeting</button>
+                        </div>
+                        <div class="card card7">
+                            <div class="card-header">
+                                <h4>Project </h4>
+                                <button class="btn-secondary">+ New</button>
+                            </div>
+                            <div class="profile">
+                                <img src="assets/icons/user-avatar.png" alt="User Avatar">
+                                <div>
+                                    <p>John Doe</p>
+                                    <span>Project Manager</span>
+                                </div>
+                            </div>
+                            <div class="profile">
+                                <img src="assets/icons/user-avatar.png" alt="User Avatar">
+                                <div>
+                                    <p>John Doe</p>
+                                    <span>Project Manager</span>
+                                </div>
+                            </div>
+                            <div class="profile">
+                                <img src="assets/icons/user-avatar.png" alt="User Avatar">
+                                <div>
+                                    <p>John Doe</p>
+                                    <span>Project Manager</span>
+                                </div>
+                            </div>
+                            <div class="profile">
+                                <img src="assets/icons/user-avatar.png" alt="User Avatar">
+                                <div>
+                                    <p>John Doe</p>
+                                    <span>Project Manager</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card card8">
+                            <div class="card-header">
+                                <h4>Team Collaboration</h4>
+                                <button class="btn-secondary">+ Add Member</button>
+                            </div>
+                            <div class="profile">
+                                <img src="assets/icons/user-avatar.png" alt="User Avatar">
+                                <div>
+                                    <p>John Doe</p>
+                                    <span>Project Manager</span>
+                                </div>
+                            </div>
+                            <div class="profile">
+                                <img src="assets/icons/user-avatar.png" alt="User Avatar">
+                                <div>
+                                    <p>John Doe</p>
+                                    <span>Project Manager</span>
+                                </div>
+                            </div>
+                            <div class="profile">
+                                <img src="assets/icons/user-avatar.png" alt="User Avatar">
+                                <div>
+                                    <p>John Doe</p>
+                                    <span>Project Manager</span>
+                                </div>
+                            </div>
+                            <div class="profile">
+                                <img src="assets/icons/user-avatar.png" alt="User Avatar">
+                                <div>
+                                    <p>John Doe</p>
+                                    <span>Project Manager</span>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <div class="card card10">
+                            <h4>Time Tracking</h4>
+                            <h2>01:24:36</h2>
+                            <div>
+                                <img src="assets/icons/play-button.png" alt="">
+                                <img src="assets/icons/pause.png" alt="">
+                                <img src="assets/icons/rectangle-svgrepo-com.svg" alt="">
+                            </div>
+                        </div>
+                        <div class="card card12">
+                            <h4>Project Progress</h4>
+                            <img src="assets/images/project-progress.png" alt="Project Progress">
                         </div>
                     </div>
-                    <div class="profile">
-                        <img src="assets/icons/user-avatar.png" alt="User Avatar">
-                        <div>
-                            <p>John Doe</p>
-                            <span>Project Manager</span>
+                </section>
+            </section>
+            <section class="main-content hidden" id="tasks">
+                <div class="task-header">
+                    <div class="search">
+                        <input type="text" placeholder="Search...">
+                        <img src="assets/icons/search.png" alt="Search Icon">
+                    </div>
+                    <div class="header-right">
+                        <button class="btn-primary">Add Task</button>
+                        <button class="btn-secondary">Filter</button>
+                        <div class="profile">
+                            <img src="assets/icons/user-avatar.png" alt="User Avatar">
+                            <div>
+                                <p>John Doe</p>
+                                <span>Project Manager</span>
+                            </div>
                         </div>
                     </div>
-                    <div class="profile">
-                        <img src="assets/icons/user-avatar.png" alt="User Avatar">
-                        <div>
-                            <p>John Doe</p>
-                            <span>Project Manager</span>
-                        </div>
-                    </div>
-                    
                 </div>
-                <div class="card card10">
-                    <h4>Time Tracking</h4>
-                    <h2>01:24:36</h2>
-                    <div>
-                        <img src="assets/icons/play-button.png" alt="">
-                        <img src="assets/icons/pause.png" alt="">
-                        <img src="assets/icons/rectangle-svgrepo-com.svg" alt="">
+                <section class="tasks-content">
+                    <div class="tasks">
+                        <div class="to-do">
+                            <div class="header">
+                                <div class="details">
+                                    <span class="type">To Do</span>
+                                    <span class="count">0</span>
+                                </div>
+                                <div class="actions">
+                                    <img src="assets/icons/more-options.png" alt="More Options">
+                                    <img src="assets/icons/add.png" alt="">
+                                </div>
+                            </div>
+                            <div class="task">
+                                <h4>Task name</h4>
+                                <p>Task description goes here...</p>
+                                <div class="details">
+                                    <span class="due-date">Due Date</span>
+                                    <span class="deadline">In 3 days</span>
+                                </div>
+                            </div>
+                            <div class="task">
+                                <h4>Task name</h4>
+                                <p>Task description goes here...</p>
+                                <div class="details">
+                                    <span class="due-date">Due Date</span>
+                                    <span class="deadline">In 3 days</span>
+                                </div>
+                            </div>
+                            <div class="task">
+                                <h4>Task name</h4>
+                                <p>Task description goes here...</p>
+                                <div class="details">
+                                    <span class="due-date">Due Date</span>
+                                    <span class="deadline">In 3 days</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="in-progress">
+                            <div class="header">
+                                <div class="details">
+                                    <span class="type">In Progress</span>
+                                    <span class="count">0</span>
+                                </div>
+                                <div class="actions">
+                                    <img src="assets/icons/more-options.png" alt="More Options">
+                                    <img src="assets/icons/add.png" alt="">
+                                </div>
+                            </div>
+                            <div class="task">
+                                <h4>Task name</h4>
+                                <p>Task description goes here...</p>
+                                <div class="details">
+                                    <span class="due-date">Due Date</span>
+                                    <span class="deadline">In 3 days</span>
+                                </div>
+                            </div>
+                            <div class="task">
+                                <h4>Task name</h4>
+                                <p>Task description goes here...</p>
+                                <div class="details">
+                                    <span class="due-date">Due Date</span>
+                                    <span class="deadline">In 3 days</span>
+                                </div>
+                            </div>
+                            <div class="task">
+                                <h4>Task name</h4>
+                                <p>Task description goes here...</p>
+                                <div class="details">
+                                    <span class="due-date">Due Date</span>
+                                    <span class="deadline">In 3 days</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="done">
+                            <div class="header">
+                                <div class="details">
+                                    <span class="type">Done</span>
+                                    <span class="count">0</span>
+                                </div>
+                                <div class="actions">
+                                    <img src="assets/icons/more-options.png" alt="More Options">
+                                    <img src="assets/icons/add.png" alt="">
+                                </div>
+                                
+                            </div>
+                            <div class="task">
+                                <h4>Task name</h4>
+                                <p>Task description goes here...</p>
+                                <div class="details">
+                                    <span class="due-date">Due Date</span>
+                                    <span class="deadline">In 3 days</span>
+                                </div>
+                            </div>
+                            <div class="task">
+                                <h4>Task name</h4>
+                                <p>Task description goes here...</p>
+                                <div class="details">
+                                    <span class="due-date">Due Date</span>
+                                    <span class="deadline">In 3 days</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pending">
+                            <div class="header">
+                                <div class="details">
+                                    <span class="type">Pending</span>
+                                    <span class="count">0</span>
+                                </div>
+                                <div class="actions">
+                                    <img src="assets/icons/more-options.png" alt="More Options">
+                                    <img src="assets/icons/add.png" alt="">
+                                </div>
+                            </div>
+                            <div class="task">
+                                <h4>Task name</h4>
+                                <p>Task description goes here...</p>
+                                <div class="details">
+                                    <span class="due-date">Due Date</span>
+                                    <span class="deadline">In 3 days</span>
+                                </div>
+                            </div>
+                            <div class="task">
+                                <h4>Task name</h4>
+                                <p>Task description goes here...</p>
+                                <div class="details">
+                                    <span class="due-date">Due Date</span>
+                                    <span class="deadline">In 3 days</span>
+                                </div>
+                            </div>
+                            <div class="task">
+                                <h4>Task name</h4>
+                                <p>Task description goes here...</p>
+                                <div class="details">
+                                    <span class="due-date">Due Date</span>
+                                    <span class="deadline">In 3 days</span>
+                                </div>
+                            </div>
+                            <div class="task">
+                                <h4>Task name</h4>
+                                <p>Task description goes here...</p>
+                                <div class="details">
+                                    <span class="due-date">Due Date</span>
+                                    <span class="deadline">In 3 days</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="card card12">
-                    <h4>Project Progress</h4>
-                    <img src="assets/images/project-progress.png" alt="Project Progress">
-                </div>
-            </div>
-        </section>
-    </section>
+                </section>
+            </section>
+        </div>
+    
     </main>
 </body>
 </html>

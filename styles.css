@@ -31,6 +31,10 @@
     font-family: 'Montserrat', Arial, sans-serif;
 }
 
+html, body {
+    scroll-behavior: smooth;
+}
+
 body {
     background-color: var(--clr-bg);
     color: var(--clr-text);
@@ -39,7 +43,8 @@ body {
 main {
     display: flex;
     gap: 15px;
-    height: 100vh;
+    min-height: 100vh;
+    height: auto;
     padding: 10px 20px;
 }
 /* Navigation Styles */
@@ -52,11 +57,11 @@ nav {
     flex-direction: column;
     gap: 10px;
     padding: 0 10px;
-    position: fixed; /* Change to fixed */
-    top: 10px; /* Sticks at 10px from the top (matches main padding) */
-    left: 20px; /* Matches main's left padding */
-    height: calc(100vh - 20px); /* Fills viewport height minus top/bottom padding */
-    overflow-y: auto; /* Adds scrollbar if content overflows */
+    position: fixed;
+    top: 10px;
+    left: 20px;
+    height: calc(100vh - 20px);
+    overflow-y: auto;
 }
 
 .logo {
@@ -114,16 +119,33 @@ nav h3 {
 }
 
 /* Main Content Styles */
+.content{
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    width: 100%;
+}
 .main-content {
-    flex-grow: 1;
     display: flex;
     flex-direction: column;
     gap: 15px;
     width: 75%;
-    margin-left: calc(20% + 20px); /* Add this: Accounts for fixed nav width + original gap to prevent overlap */
+    min-height: 100vh;
+    margin-left: calc(20% + 20px); 
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.hidden {
+  opacity: 0;
+  transform: translateY(200px);
+  pointer-events: none;
+}
+
+.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 /* Header Styles */
-header {
+.dashboard-header {
     background-color: var(--clr-surface);
     padding: 20px 30px;
     border-radius: 15px;
@@ -254,7 +276,128 @@ header {
     color: var(--clr-white);
     background-color: var(--clr-mid2);
 }
+.task-header {
+    background-color: var(--clr-surface);
+    padding: 20px 30px;
+    border-radius: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.tasks{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    justify-content: center;
+    align-items: start;
+    gap: 20px;
+}
 
+.to-do, .in-progress, .done, .pending {
+    background-color: var(--clr-surface);
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 51, 78, 0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.details {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+.details .type {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--clr-heading);
+}
+.details .count {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--clr-primary);
+}
+.actions {
+    display: flex;
+    gap: 10px;
+}
+.actions img {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.to-do .details .type {
+    background-color: var(--clr-dark);
+    
+}
+
+.in-progress .details .type {
+    background-color: var(--clr-primary);
+
+}
+
+.done .details .type {
+    background-color: var(--clr-secondary);
+
+}
+
+.pending .details .type {
+    background-color: var(--clr-warm-beige);
+}
+.details .type {
+    padding: 5px ;
+    border-radius: 5px;
+    color: var(--clr-white);
+
+}
+.count {
+    font-size: 16px;
+    font-weight: 700;
+    margin-left: 10px;
+    color: var(--clr-primary);
+    border: 1px solid var(--clr-primary);
+    border-radius: 5px;
+    padding: 2px 6px;
+}
+
+.task{
+    display: flex;
+    background-color: var(--clr-white);
+    flex-direction: column;
+    gap: 10px;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.task .details {
+    justify-content: space-between;
+}
+.task h4 {
+    font-size: 1.1rem;
+    color: var(--clr-heading);
+    font-weight: 600;
+}
+.task p {
+    font-size: 0.9rem;
+    color: var(--clr-text);
+    line-height: 1.4;
+}
+.task .details .type {
+    background-color: var(--clr-dark);
+    padding: 4px 8px;
+    border-radius: 5px;
+    font-size: 0.8rem;
+}
+.task .details .deadline {
+    font-size: 0.8rem;
+    color: var(--clr-text);
+}
 /*cards styles*/
 
 .cards {
@@ -389,4 +532,3 @@ header {
     grid-column-start: 3;
     grid-row-start: 3;
 }
-        
