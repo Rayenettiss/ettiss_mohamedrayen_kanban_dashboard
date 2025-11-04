@@ -3,6 +3,8 @@
   /* Base neutrals */
   --clr-white: #ffffff;
   --clr-black: #000000;
+  --clr-gray-light: #F5F5F5;
+  --clr-gray-dark: #A9A9A9;
 
   /* Core palette */
   --clr-light: #EEEEEE;
@@ -244,6 +246,66 @@ nav h3 {
     justify-content: center;
     gap: 15px;
 }
+.project-item{
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    gap: 15px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--clr-navy-deep);
+}
+.project-item:last-child{
+    border-bottom: none;
+    margin-bottom: 0;
+}
+.project-item img{
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius:10%;
+}
+.project-item div>p{
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--clr-heading);
+}
+.project-item .due-date{
+    font-size: 10px;
+    color: var(--clr-text); 
+    border: none
+}
+
+.team-item{
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    gap: 15px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--clr-navy-deep);
+}
+.team-item:last-child{
+    border-bottom: none;
+    margin-bottom: 0;
+}
+.team-item img{
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius:10%;
+}
+.team-item div>p{
+    margin: 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--clr-heading);
+}
+.team-item .job-title{
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--clr-text); 
+    border: none;
+}
 /* Button Styles */
 .btn-primary {
     background: var(--clr-dark);
@@ -388,6 +450,12 @@ nav h3 {
     color: var(--clr-text);
     line-height: 1.4;
 }
+.task .due-date {
+    font-size: 0.8rem;
+    color: var(--clr-gray-dark);
+    font-style: italic;
+}
+
 .task .details .type {
     background-color: var(--clr-dark);
     padding: 4px 8px;
@@ -395,9 +463,17 @@ nav h3 {
     font-size: 0.8rem;
 }
 .task .details .deadline {
-    font-size: 0.8rem;
-    color: var(--clr-text);
+    font-size: 12px;
+    color: var(--clr-gray-dark);
+    font-style: italic;
 }
+.overdue {
+    color: red!important;
+}
+.urgent{
+    color: orange !important;
+}
+
 /*cards styles*/
 
 .cards {
@@ -416,6 +492,7 @@ nav h3 {
     display: flex;
     flex-direction: column; 
     justify-content: center;
+    
 }
 .card10{
     align-items: center;
@@ -471,6 +548,12 @@ nav h3 {
 .card6 button{
     width: 100%;    
 }
+.card6 p{
+    font-size: 14px;
+    color: var(--clr-gray-dark);
+    font-weight: 400;
+    font-style: italic;
+}
 .card10 h2{
     color: var(--clr-white)!important;
 }
@@ -508,13 +591,14 @@ nav h3 {
     grid-row: span 2 / span 2;
     grid-column-start: 4;
     grid-row-start: 2;
+    gap:5px;
 }
 
 .card8 {
-    grid-column: span 2 / span 2;
     grid-row: span 2 / span 2;
     grid-column-start: 1;
     grid-row-start: 3;
+    justify-content: start;
 }
 
 .card10 {
@@ -529,6 +613,8 @@ nav h3 {
 
 .card12 {
     grid-row: span 2 / span 2;
-    grid-column-start: 3;
+    grid-column: span 2 / span 2;
+    grid-column-start: 2;
     grid-row-start: 3;
+    justify-content: start;
 }

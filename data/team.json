@@ -1,0 +1,66 @@
+[
+  {
+    "id": 1,
+    "full_name": "Rayen Mansour",
+    "job": "Frontend Engineer",
+    "email": "rayen.mansour@gmail.com",
+    "phone": "+216 21 345 876",
+    "image": "https://randomuser.me/api/portraits/men/12.jpg"
+  },
+  {
+    "id": 2,
+    "full_name": "Sarra Haddad",
+    "job": "Backend Developer",
+    "email": "sarra.haddad@gmail.com",
+    "phone": "+216 24 789 654",
+    "image": "https://randomuser.me/api/portraits/women/25.jpg"
+  },
+  {
+    "id": 3,
+    "full_name": "Youssef Ben Ali",
+    "job": "UI/UX Designer",
+    "email": "youssef.benali@gmail.com",
+    "phone": "+216 50 123 456",
+    "image": "https://randomuser.me/api/portraits/men/33.jpg"
+  },
+  {
+    "id": 4,
+    "full_name": "Nour Chatti",
+    "job": "QA Tester",
+    "email": "nour.chatti@gmail.com",
+    "phone": "+216 27 456 321",
+    "image": "https://randomuser.me/api/portraits/women/48.jpg"
+  },
+  {
+    "id": 5,
+    "full_name": "Malek Gharbi",
+    "job": "Project Manager",
+    "email": "malek.gharbi@gmail.com",
+    "phone": "+216 55 987 213",
+    "image": "https://randomuser.me/api/portraits/men/60.jpg"
+  },
+  {
+    "id": 6,
+    "full_name": "Amira Kacem",
+    "job": "DevOps Engineer",
+    "email": "amira.kacem@gmail.com",
+    "phone": "+216 26 333 777",
+    "image": "https://randomuser.me/api/portraits/women/30.jpg"
+  },
+  {
+    "id": 7,
+    "full_name": "Omar Ben Youssef",
+    "job": "Full Stack Developer",
+    "email": "omar.benyoussef@gmail.com",
+    "phone": "+216 20 654 987",
+    "image": "https://randomuser.me/api/portraits/men/42.jpg"
+  },
+  {
+    "id": 8,
+    "full_name": "Lina Trabelsi",
+    "job": "UI Designer",
+    "email": "lina.trabelsi@gmail.com",
+    "phone": "+216 58 741 963",
+    "image": "https://randomuser.me/api/portraits/women/67.jpg"
+  }
+]
