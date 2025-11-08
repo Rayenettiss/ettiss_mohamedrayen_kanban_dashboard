@@ -338,6 +338,39 @@ nav h3 {
     color: var(--clr-white);
     background-color: var(--clr-mid2);
 }
+/*Project Progress Gauge Chart*/
+.chart-container {
+    max-width: 450px;
+    margin: 20px auto;
+    text-align: center;
+}
+
+canvas {
+    display: block;
+    margin: 0 auto;
+}
+.legend {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 15px;
+    font-size: 14px;
+}
+.legend-item {
+    display: flex;
+    align-items: center;
+    margin: 0 15px;
+}
+.legend-dot {
+    width: 16px;
+    height: 16px;
+    margin-right: 6px;
+    border-radius: 50%;
+}
+.legend-pending {
+    background: repeating-linear-gradient(45deg, #5588A3 0px, #5588A3 4px, #f5f5f5 4px, #f5f5f5 8px);
+}
+/*tasks sections*/
 .task-header {
     background-color: var(--clr-surface);
     padding: 20px 30px;
@@ -556,7 +589,10 @@ nav h3 {
 }
 .card10 h2{
     color: var(--clr-white)!important;
+    margin: 10px!important;
+    font-size: 3em!important;
 }
+
 .card10 div {
     display: flex;
     gap: 15px;
@@ -591,6 +627,7 @@ nav h3 {
     grid-row: span 2 / span 2;
     grid-column-start: 4;
     grid-row-start: 2;
+    justify-content: flex-start;
     gap:5px;
 }
 

@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>flowBoard</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="script.js"></script>
 </head>
 <body>
     <main>
@@ -79,8 +78,10 @@
                             <p>On discussion</p>
                         </div>
                         <div class="card card5">
-                            <h4>Project Analytics</h4>
-                            <img src="assets/images/analytics-chart.png" alt="Analytics Chart">
+                            <div class="chart-container">
+                                <h3>Tasks completed </h3>
+                                <canvas id="analyticsChart" width="400" height="300"></canvas>
+                            </div>
                         </div>
                         <div class="card card6">
                             <h4>Reminders</h4>
@@ -102,16 +103,32 @@
                         </div>
                         <div class="card card10">
                             <h4>Time Tracking</h4>
-                            <h2>01:24:36</h2>
-                            <div>
-                                <img src="assets/icons/play-button.png" alt="">
-                                <img src="assets/icons/pause.png" alt="">
-                                <img src="assets/icons/rectangle-svgrepo-com.svg" alt="">
+                            <h2>00:00:00</h2>
+                            <div class="play-button">
+                                <img src="assets/icons/play.png"   alt="Play"   class="timer-play">
+                                <img src="assets/icons/pause.png"  alt="Pause"  class="timer-pause">
+                                <img src="assets/icons/stop.svg"   alt="Stop"   class="timer-stop">
                             </div>
                         </div>
                         <div class="card card12">
-                            <h4>Project Progress</h4>
-                            <img src="assets/images/project-progress.png" alt="Project Progress">
+                            <div class="chart-container">
+                                <h3>Project Progress</h3>
+                                <canvas id="progressChart" width="400" height="270"></canvas>
+                                <div class="legend">
+                                    <div class="legend-item">
+                                        <div class="legend-dot" style="background: #00334E;"></div>
+                                        Completed
+                                    </div>
+                                    <div class="legend-item">
+                                        <div class="legend-dot" style="background: #5588A3;"></div>
+                                        In Progress
+                                    </div>
+                                    <div class="legend-item">
+                                        <div class="legend-dot legend-pending"></div>
+                                        Pending
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -193,5 +210,6 @@
         </div>
     
     </main>
+    <script src="script.js"></script>
 </body>
 </html>
