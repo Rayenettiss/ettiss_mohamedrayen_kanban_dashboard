@@ -468,7 +468,9 @@ canvas {
     gap: 10px;
     padding: 15px;
     border-radius: 8px;
+    position: relative;
 }
+
 
 .task .details {
     justify-content: space-between;
@@ -477,6 +479,7 @@ canvas {
     font-size: 1.1rem;
     color: var(--clr-heading);
     font-weight: 600;
+    margin: 1rem 0;
 }
 .task p {
     font-size: 0.9rem;
@@ -500,13 +503,65 @@ canvas {
     color: var(--clr-gray-dark);
     font-style: italic;
 }
+.task img{
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+.task-head{
+    display: flex;
+    justify-content: end;
+}
 .overdue {
     color: red!important;
 }
 .urgent{
     color: orange !important;
 }
+/* More-options menu */
+.more-menu {
+  position: absolute;
+  top: 40px; /* below the icon */
+  right: 0;
+  background: var(--clr-white);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,51,78,0.15);
+  min-width: 140px;
+  z-index: 10;
+  display: none;
+  padding: 5px 0;
+}
+.more-menu.show {
+  display: block;
+}
+.more-menu button {
+  width: 100%;
+  padding: 8px 12px;
+  border: none;
+  background: transparent;
+  text-align: left;
+  font-size: 0.9rem;
+  cursor: pointer;
+  color: var(--clr-text);
+}
+.more-menu button:hover {
+  background: var(--clr-light);
+}
+.more-menu button.delete {
+  color: red;
+}
 
+/* Position the task-head (for more-options img) */
+.task-head {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+.task-head img {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
 /*cards styles*/
 
 .cards {

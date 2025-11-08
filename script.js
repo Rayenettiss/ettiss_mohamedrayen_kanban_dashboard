@@ -367,124 +367,233 @@ fetch('data/team.json')
   })
   .catch(err => console.error('Teams load error:', err));
 
+
 // tasks data
+// ==================== TASKS DATA (FIXED) ====================
+let tasks = []; // Global array to hold tasks data
+
+// Define these functions ONCE in global scope
+function getDeadlineInfo(dueDateStr) {
+  const currentDate = new Date();
+  const dueDate = new Date(dueDateStr);
+  const diffTime = dueDate - currentDate;
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+  let text = '';
+  let className = '';
+
+  if (diffDays < 0) {
+    text = `Overdue ${Math.abs(diffDays)} days`;
+    className = 'overdue';
+  } else if (diffDays === 0) {
+    text = 'Today';
+    className = 'today';
+  } else if (diffDays <= 3) {
+    text = `In ${diffDays} days`;
+    className = 'urgent';
+  } else {
+    text = `In ${diffDays} days`;
+    className = '';
+  }
+
+  return { text, className };
+}
+
+function formatDueDate(dueDateStr) {
+  const due = new Date(dueDateStr);
+  return due.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric'
+  });
+}
+
+function createMenu(task, card, moreImg, updateCounts) {
+  const menu = document.createElement('div');
+  menu.className = 'more-menu';
+
+   const statusMap = {
+    'to do': 'in progress',
+    'in progress': 'done',
+    'done': 'pending',
+    'pending': 'to do'
+  };
+  const nextStatus = statusMap[task.status] || 'to do';
+
+  const statusBtn = document.createElement('button');
+  statusBtn.textContent = `Mark as ${nextStatus}`;
+  statusBtn.onclick = e => {
+    e.stopPropagation();
+    const targetCol = document.querySelector(`.${nextStatus.replace(' ', '-')}`);
+    if (!targetCol) return;
+
+
+    card.remove();
+    targetCol.appendChild(card);
+    task.status = nextStatus;
+
+    const details = card.querySelector('.details');
+    const oldDeadline = details.querySelector('.deadline');
+    if (oldDeadline) oldDeadline.remove();
+
+    const showDeadline = !(nextStatus === 'done' || nextStatus === 'pending');
+    if (showDeadline) {
+      const info = getDeadlineInfo(task.due_date);
+      const span = document.createElement('span');
+      span.className = 'deadline';
+      if (info.className) span.classList.add(info.className);
+      span.textContent = info.text;
+      details.appendChild(span);
+    }
+
+    const oldMenu = card.querySelector('.more-menu');
+    if (oldMenu) oldMenu.remove();
+    const newMenu = createMenu(task, card, moreImg, updateCounts);
+    card.appendChild(newMenu);
+
+    updateCounts();
+    menu.classList.remove('show');
+  };
+  menu.appendChild(statusBtn);
+
+  const delBtn = document.createElement('button');
+  delBtn.textContent = 'Delete';
+  delBtn.className = 'delete';
+  delBtn.onclick = e => {
+    e.stopPropagation();
+    if (confirm('Delete this task?')) {
+      const col = card.parentElement;
+      card.remove();
+      if (col.querySelectorAll('.task').length === 0) {
+        const msg = document.createElement('p');
+        msg.textContent = 'No tasks.';
+        msg.style.cssText = 'padding:1rem;color:var(--clr-gray-dark);text-align:center;';
+        col.appendChild(msg);
+      }
+      updateCounts();
+    }
+    menu.classList.remove('show');
+  };
+  menu.appendChild(delBtn);
+
+
+  moreImg.onclick = e => {
+    e.stopPropagation();
+    document.querySelectorAll('.more-menu.show').forEach(m => m.classList.remove('show'));
+    menu.classList.toggle('show');
+  };
+
+  return menu;
+}
+
+function populateColumn(selector, status) {
+  const column = document.querySelector(selector);
+  if (!column) return;
+
+  const oldTasks = column.querySelectorAll('.task, p');
+  oldTasks.forEach(el => el.remove());
+
+  const filtered = tasks.filter(t => t.status === status);
+  const showDeadline = !(status === 'done' || status === 'pending');
+
+  if (filtered.length === 0) {
+    const msg = document.createElement('p');
+    msg.textContent = 'No tasks.';
+    msg.style.cssText = 'padding:1rem;color:var(--clr-gray-dark);text-align:center;';
+    column.appendChild(msg);
+    return;
+  }
+
+  filtered.forEach(task => {
+    const card = document.createElement('div');
+    card.className = 'task';
+
+    const head = document.createElement('div');
+    head.className = 'task-head';
+    const moreImg = document.createElement('img');
+    moreImg.src = 'assets/icons/more-options.png';
+    moreImg.alt = 'More options';
+    head.appendChild(moreImg);
+    card.appendChild(head);
+
+    const title = document.createElement('h4');
+    title.textContent = task.name;
+    card.appendChild(title);
+
+    const desc = document.createElement('p');
+    desc.textContent = task.description;
+    card.appendChild(desc);
+
+    const details = document.createElement('div');
+    details.className = 'details';
+
+    const due = document.createElement('span');
+    due.className = 'due-date';
+    due.textContent = formatDueDate(task.due_date);
+    details.appendChild(due);
+
+    if (showDeadline) {
+      const info = getDeadlineInfo(task.due_date);
+      const dead = document.createElement('span');
+      dead.className = 'deadline';
+      if (info.className) dead.classList.add(info.className);
+      dead.textContent = info.text;
+      details.appendChild(dead);
+    }
+    card.appendChild(details);
+
+    const menu = createMenu(task, card, moreImg, updateColumnCounts);
+    card.appendChild(menu);
+
+    column.appendChild(card);
+  });
+}
+
+function updateColumnCounts() {
+  const columns = [
+    { sel: '.to-do', status: 'to do' },
+    { sel: '.in-progress', status: 'in progress' },
+    { sel: '.done', status: 'done' },
+    { sel: '.pending', status: 'pending' }
+  ];
+
+  columns.forEach(col => {
+    const header = document.querySelector(`${col.sel} .header .count`);
+    if (!header) return;
+    const taskCount = document.querySelectorAll(`${col.sel} .task`).length;
+    header.textContent = taskCount;
+  });
+}
+
+// ==================== SINGLE FETCH CALL ====================
 fetch('data/tasks.json')
   .then(r => {
     if (!r.ok) throw new Error('Failed to load tasks.json');
     return r.json();
   })
-  .then(tasks => {
-    // Update task counts
-    const toDoCount = tasks.filter(t => t.status === 'to do').length;
-    const inProgressCount = tasks.filter(t => t.status === 'in progress').length;
-    const doneCount = tasks.filter(t => t.status === 'done').length;
-    const pendingCount = tasks.filter(t => t.status === 'pending').length;
+  .then(data => {
+    tasks = data; // Assign to global
 
-    document.querySelector('.to-do .count').textContent = toDoCount;
-    document.querySelector('.in-progress .count').textContent = inProgressCount;
-    document.querySelector('.done .count').textContent = doneCount;
-    document.querySelector('.pending .count').textContent = pendingCount;
+    // Initial counts in header
+    document.querySelector('.to-do .count').textContent = tasks.filter(t => t.status === 'to do').length;
+    document.querySelector('.in-progress .count').textContent = tasks.filter(t => t.status === 'in progress').length;
+    document.querySelector('.done .count').textContent = tasks.filter(t => t.status === 'done').length;
+    document.querySelector('.pending .count').textContent = tasks.filter(t => t.status === 'pending').length;
 
-    // Function to calculate deadline info
-    function getDeadlineInfo(dueDateStr) {
-      const currentDate = new Date(); // Use current date
-      const dueDate = new Date(dueDateStr);
-      const diffTime = dueDate - currentDate;
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-      let text = '';
-      let className = '';
-
-      if (diffDays < 0) {
-        text = `Overdue ${Math.abs(diffDays)} days`;
-        className = 'overdue'; // Red
-      } else if (diffDays === 0) {
-        text = 'Today';
-        className = 'today'; // Default or green (add CSS)
-      } else if (diffDays <= 3) {
-        text = `In ${diffDays} days`;
-        className = 'urgent'; // Orange
-      } else {
-        text = `In ${diffDays} days`;
-        className = ''; // Default
-      }
-
-      return { text, className };
-    }
-
-    // Function to format due date like "Nov 10, 2025"
-    function formatDueDate(dueDateStr) {
-      const due = new Date(dueDateStr);
-      const monthName = due.toLocaleString('default', { month: 'short' });
-      const day = due.getDate();
-      const year = due.getFullYear();
-      return `${monthName} ${day}, ${year}`;
-    }
-
-    // Helper to populate a column with limited tasks (5 max per column)
-    function populateColumn(selector, status) {
-      const column = document.querySelector(selector);
-      if (!column) return;
-
-      // Filter tasks
-      const filteredTasks = tasks.filter(t => t.status === status);
-
-      // Handle empty
-      if (filteredTasks.length === 0) {
-        const emptyMsg = document.createElement('p');
-        emptyMsg.textContent = 'No tasks.';
-        emptyMsg.style.padding = '1rem';
-        emptyMsg.style.color = 'var(--clr-gray-dark)';
-        emptyMsg.style.textAlign = 'center';
-        column.appendChild(emptyMsg);
-        return;
-      }
-      // Determine if due date should be shown (disabled for 'done' and 'pending')
-      const showDueDate = !(status === 'done' || status === 'pending');
-      // Add tasks
-      filteredTasks.forEach(task => {
-        const taskDiv = document.createElement('div');
-        taskDiv.classList.add('task');
-
-        const nameH4 = document.createElement('h4');
-        nameH4.textContent = task.name;
-        taskDiv.appendChild(nameH4);
-
-        const descP = document.createElement('p');
-        descP.textContent = task.description;
-        taskDiv.appendChild(descP);
-
-        const detailsDiv = document.createElement('div');
-        detailsDiv.classList.add('details');
-
-        const dueSpan = document.createElement('span');
-        dueSpan.classList.add('due-date');
-        dueSpan.textContent = `${formatDueDate(task.due_date)}`;
-        detailsDiv.appendChild(dueSpan);
-        if (showDueDate) {
-        const deadlineInfo = getDeadlineInfo(task.due_date);
-        const deadlineSpan = document.createElement('span');
-        deadlineSpan.classList.add('deadline');
-        if (deadlineInfo.className) {
-          deadlineSpan.classList.add(deadlineInfo.className);
-        }
-        deadlineSpan.textContent = deadlineInfo.text;
-        detailsDiv.appendChild(deadlineSpan);
-    }
-
-        taskDiv.appendChild(detailsDiv);
-        column.appendChild(taskDiv);
-      });
-    }
-
-    // Populate each column
+    // Populate all columns
     populateColumn('.to-do', 'to do');
     populateColumn('.in-progress', 'in progress');
     populateColumn('.done', 'done');
     populateColumn('.pending', 'pending');
+
+    updateColumnCounts(); // Final sync
   })
   .catch(err => console.error('Tasks load error:', err));
 
+  document.addEventListener('click', () => {
+    document.querySelectorAll('.more-menu.show')
+            .forEach(m => m.classList.remove('show'));
+});
   //time tracker
 document.addEventListener('DOMContentLoaded', () => {
   // Time Tracker Functionality
