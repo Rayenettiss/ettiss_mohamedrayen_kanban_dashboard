@@ -507,6 +507,12 @@ function populateColumn(selector, status) {
   filtered.forEach(task => {
     const card = document.createElement('div');
     card.className = 'task';
+    card.dataset.taskId = task.id;
+    card.draggable = true;
+
+    card.addEventListener('dragstart', e => {
+      e.dataTransfer.setData('text/plain', task.id);
+    });
 
     const head = document.createElement('div');
     head.className = 'task-head';
@@ -572,7 +578,7 @@ fetch('data/tasks.json')
     return r.json();
   })
   .then(data => {
-    tasks = data; // Assign to global
+    tasks = data.map((t, i) => ({ ...t, id: i })); // Assign unique IDs
 
     // Initial counts in header
     document.querySelector('.to-do .count').textContent = tasks.filter(t => t.status === 'to do').length;
@@ -585,6 +591,83 @@ fetch('data/tasks.json')
     populateColumn('.in-progress', 'in progress');
     populateColumn('.done', 'done');
     populateColumn('.pending', 'pending');
+
+    // Set up drag and drop events on columns
+    const columns = document.querySelectorAll('.to-do, .in-progress, .done, .pending');
+    columns.forEach(col => {
+      col.addEventListener('dragover', e => e.preventDefault());
+      col.addEventListener('dragenter', e => {
+        e.preventDefault();
+        col.style.backgroundColor = 'rgba(85,136,163,0.4)';
+      });
+      col.addEventListener('dragleave', () => {
+        col.style.backgroundColor = '';
+      });
+      col.addEventListener('drop', e => {
+        e.preventDefault();
+        col.style.backgroundColor = '';
+
+        const taskId = e.dataTransfer.getData('text/plain');
+        const task = tasks.find(t => t.id == taskId);
+        if (!task) return;
+
+        const card = document.querySelector(`.task[data-task-id="${taskId}"]`);
+        if (!card) return;
+
+        const oldCol = card.parentElement;
+
+        // Remove empty message if present in target column
+        const emptyMsg = col.querySelector('p');
+        if (emptyMsg && emptyMsg.textContent === 'No tasks.') {
+          emptyMsg.remove();
+        }
+
+        // Move card
+        col.appendChild(card);
+
+        // Determine new status
+        let newStatus;
+        if (col.classList.contains('to-do')) newStatus = 'to do';
+        else if (col.classList.contains('in-progress')) newStatus = 'in progress';
+        else if (col.classList.contains('done')) newStatus = 'done';
+        else if (col.classList.contains('pending')) newStatus = 'pending';
+
+        task.status = newStatus;
+
+        // Update deadline display
+        const details = card.querySelector('.details');
+        const oldDeadline = details.querySelector('.deadline');
+        if (oldDeadline) oldDeadline.remove();
+
+        const showDeadline = !(newStatus === 'done' || newStatus === 'pending');
+        if (showDeadline) {
+          const info = getDeadlineInfo(task.due_date);
+          const span = document.createElement('span');
+          span.className = 'deadline';
+          if (info.className) span.classList.add(info.className);
+          span.textContent = info.text;
+          details.appendChild(span);
+        }
+
+        // Recreate more menu
+        const oldMenu = card.querySelector('.more-menu');
+        if (oldMenu) oldMenu.remove();
+
+        const moreImg = card.querySelector('.task-head img');
+        const newMenu = createMenu(task, card, moreImg, updateColumnCounts);
+        card.appendChild(newMenu);
+
+        // Check if old column is now empty
+        if (oldCol.querySelectorAll('.task').length === 0) {
+          const msg = document.createElement('p');
+          msg.textContent = 'No tasks.';
+          msg.style.cssText = 'padding:1rem;color:var(--clr-gray-dark);text-align:center;';
+          oldCol.appendChild(msg);
+        }
+
+        updateColumnCounts();
+      });
+    });
 
     updateColumnCounts(); // Final sync
   })
