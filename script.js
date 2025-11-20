@@ -45,6 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
 /* --------------------------------------------------------------
    PROJECTS + GAUGE CHART 
    -------------------------------------------------------------- */
+
 fetch('data/projects.json')
   .then(r => {
     if (!r.ok) throw new Error('Failed to load projects.json');
@@ -57,11 +58,36 @@ fetch('data/projects.json')
     const running   = projects.filter(p => p.status === 'running').length;
     const pending   = projects.filter(p => p.status === 'pending').length;
 
-    // update the four little cards
-    document.querySelector('.card1 h2')?.replaceChildren(total);
-    document.querySelector('.card2 h2')?.replaceChildren(completed);
-    document.querySelector('.card3 h2')?.replaceChildren(running);
-    document.querySelector('.card4 h2')?.replaceChildren(pending);
+    // Function to animate count from 0 to target
+    function animateCount(element, target, duration = 1500) {
+      if (!element) return;
+      let start = 0;
+      const increment = target / (duration / 16); // Approx 60fps
+      const startTime = performance.now();
+
+      function step(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const easedProgress = 1 - Math.pow(1 - progress, 3); // Ease out cubic
+        const currentValue = Math.floor(easedProgress * target);
+
+        element.textContent = currentValue;
+
+        if (progress < 1) {
+          requestAnimationFrame(step);
+        } else {
+          element.textContent = target; // Ensure final value
+        }
+      }
+
+      requestAnimationFrame(step);
+    }
+
+    // Animate the four little cards with a slight delay for staggered effect
+    setTimeout(() => animateCount(document.querySelector('.card1 h2'), total), 400);
+    setTimeout(() => animateCount(document.querySelector('.card2 h2'), completed), 400);
+    setTimeout(() => animateCount(document.querySelector('.card3 h2'), running), 500);
+    setTimeout(() => animateCount(document.querySelector('.card4 h2'), pending), 600);
 
     /* ---------- 2. Fill card7 (running projects) ---------- */
     const card7 = document.querySelector('.card7');
@@ -74,7 +100,7 @@ fetch('data/projects.json')
         card7.appendChild(p);
       } else {
         const randomDue = () => {
-          const base = new Date(2025, 10, 4);               // 4 Nov 2025
+          const base = new Date();               // 4 Nov 2025
           const days = Math.floor(Math.random() * 60) + 1; // 1-60 days ahead
           const d = new Date(base.getTime() + days * 86400000);
           return `Due date: ${d.toLocaleDateString('en-US', {
