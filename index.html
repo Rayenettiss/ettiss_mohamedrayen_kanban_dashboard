@@ -8,21 +8,39 @@
 </head>
 <body>
     <main>
-        <nav>
-            <img src="assets/images/logo.jpg" alt="flowBoard Logo" class="logo">
+       <!-- HAMBURGER MENU & MOBILE LOGO (visible only on mobile) -->
+        <div class="mobile-header">            
+            <img src="assets/images/logo.jpg" alt="flowBoard Logo" class="logo-mobile">
+
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+
+        <!-- SIDEBAR NAV (hidden on mobile by default) -->
+        <nav id="sidebar">
+            <div class="nav-header">
+                <img src="assets/images/logo.jpg" alt="flowBoard Logo" class="logo">
+                <div class="hamburger close-btn" id="closeSidebar">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
             <h3>Menu</h3>
             <ul class="nav-links">
                 <li class="active"><a href="#dashboard"><img src="assets/icons/dashboard.png" alt=""> <p>Dashboard</p></a></li>
                 <li><a href="#tasks"><img src="assets/icons/tasks.png" alt=""> Tasks</a></li>
                 <li><a href="#projects"><img src="assets/icons/project-management.png" alt=""> Projects</a></li>
                 <li><a href="#teams"><img src="assets/icons/teams.png" alt=""> Teams</a></li>
-            <hr>
-            <br>
+                <hr>
+                <br>
                 <li><a href="#"><img src="assets/icons/settings.png" alt=""> Settings</a></li>
                 <li><a href="#"><img src="assets/icons/help.png" alt=""> Help</a></li>
                 <li><a href="#"><img src="assets/icons/logout.png" alt=""> Logout</a></li>
             </ul>
-
         </nav>
         <div class="content">
             <section class="main-content visible" id="dashboard">
