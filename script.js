@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }, { threshold: 0.1 });
-
+  
     observer.observe(tasks);
     // You can observe dashboard too if you want it to hide when out of view, but since it's initial, maybe not needed
     // observer.observe(dashboard);
