@@ -46,97 +46,138 @@ document.addEventListener('DOMContentLoaded', () => {
    PROJECTS + GAUGE CHART 
    -------------------------------------------------------------- */
 
-fetch('data/projects.json')
-  .then(r => {
-    if (!r.ok) throw new Error('Failed to load projects.json');
-    return r.json();
-  })
-  .then(projects => {
-    /* ---------- 1. Stats for the cards ---------- */
-    const total     = projects.length;
-    const completed = projects.filter(p => p.status === 'done').length;
-    const running   = projects.filter(p => p.status === 'running').length;
-    const pending   = projects.filter(p => p.status === 'pending').length;
+// Load projects from localStorage or fetch from JSON
+function loadProjects() {
+  return new Promise((resolve, reject) => {
+    const local = localStorage.getItem('projects');
+    if (local) {
+      resolve(JSON.parse(local));
+    } else {
+      fetch('data/projects.json')
+        .then(r => {
+          if (!r.ok) throw new Error('Failed to load projects.json');
+          return r.json();
+        })
+        .then(p => {
+          localStorage.setItem('projects', JSON.stringify(p));
+          resolve(p);
+        })
+        .catch(err => {
+          console.error(err);
+          resolve([]); // Fallback to empty array if fetch fails
+        });
+    }
+  });
+}
 
-    // Function to animate count from 0 to target
-    function animateCount(element, target, duration = 1500) {
-      if (!element) return;
-      let start = 0;
-      const increment = target / (duration / 16); // Approx 60fps
-      const startTime = performance.now();
+loadProjects().then(projects => {
+  populateDashboard(projects);
 
-      function step(currentTime) {
-        const elapsed = currentTime - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        const easedProgress = 1 - Math.pow(1 - progress, 3); // Ease out cubic
-        const currentValue = Math.floor(easedProgress * target);
+  const addProjectBtn = document.querySelector('.dashboard .btn-primary'); // "Add Project" button
+  if (addProjectBtn) {
+    addProjectBtn.addEventListener('click', () => showAddProjectModal(projects));
+  }
+});
 
-        element.textContent = currentValue;
+function populateDashboard(projects) {
+  /* ---------- 1. Stats for the cards ---------- */
+  const total     = projects.length;
+  const completed = projects.filter(p => p.status === 'done').length;
+  const running   = projects.filter(p => p.status === 'running').length;
+  const pending   = projects.filter(p => p.status === 'pending').length;
 
-        if (progress < 1) {
-          requestAnimationFrame(step);
-        } else {
-          element.textContent = target; // Ensure final value
-        }
+  // Function to animate count from 0 to target
+  function animateCount(element, target, duration = 1500) {
+    if (!element) return;
+    let start = 0;
+    const increment = target / (duration / 16); // Approx 60fps
+    const startTime = performance.now();
+
+    function step(currentTime) {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const easedProgress = 1 - Math.pow(1 - progress, 3); // Ease out cubic
+      const currentValue = Math.floor(easedProgress * target);
+
+      element.textContent = currentValue;
+
+      if (progress < 1) {
+        requestAnimationFrame(step);
+      } else {
+        element.textContent = target; // Ensure final value
       }
-
-      requestAnimationFrame(step);
     }
 
-    // Animate the four little cards with a slight delay for staggered effect
-    setTimeout(() => animateCount(document.querySelector('.card1 h2'), total), 400);
-    setTimeout(() => animateCount(document.querySelector('.card2 h2'), completed), 400);
-    setTimeout(() => animateCount(document.querySelector('.card3 h2'), running), 500);
-    setTimeout(() => animateCount(document.querySelector('.card4 h2'), pending), 600);
+    requestAnimationFrame(step);
+  }
 
-    /* ---------- 2. Fill card7 (running projects) ---------- */
-    const card7 = document.querySelector('.card7');
-    if (card7) {
-      const running5 = projects.filter(p => p.status === 'running').slice(0, 7);
-      if (running5.length === 0) {
-        const p = document.createElement('p');
-        p.textContent = 'No running projects.';
-        p.style.cssText = 'padding:1rem;color:var(--clr-gray-dark);text-align:center;';
-        card7.appendChild(p);
-      } else {
-        const randomDue = () => {
-          const base = new Date();               // 4 Nov 2025
-          const days = Math.floor(Math.random() * 60) + 1; // 1-60 days ahead
+  // Animate the four little cards with a slight delay for staggered effect
+  setTimeout(() => animateCount(document.querySelector('.card1 h2'), total), 400);
+  setTimeout(() => animateCount(document.querySelector('.card2 h2'), completed), 400);
+  setTimeout(() => animateCount(document.querySelector('.card3 h2'), running), 500);
+  setTimeout(() => animateCount(document.querySelector('.card4 h2'), pending), 600);
+
+  /* ---------- 2. Fill card7 (running projects) ---------- */
+  const card7 = document.querySelector('.card7');
+  if (card7) {
+    // Clear existing project items
+    const existingItems = card7.querySelectorAll('.project-item');
+    existingItems.forEach(item => item.remove());
+
+    const runningProjects = projects.filter(p => p.status === 'running').slice(0, 7);
+    if (runningProjects.length === 0) {
+      const p = document.createElement('p');
+      p.textContent = 'No running projects.';
+      p.style.cssText = 'padding:1rem;color:var(--clr-gray-dark);text-align:center;';
+      card7.appendChild(p);
+    } else {
+      const getDueDate = (project) => {
+        if (project.dueDate) {
+          const d = new Date(project.dueDate);
+          return `Due date: ${d.toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric'
+          })}`;
+        } else {
+          const base = new Date();
+          const days = Math.floor(Math.random() * 60) + 1;
           const d = new Date(base.getTime() + days * 86400000);
           return `Due date: ${d.toLocaleDateString('en-US', {
             month: 'short',
-            day:   'numeric',
-            year:  'numeric'
+            day: 'numeric',
+            year: 'numeric'
           })}`;
-        };
+        }
+      };
 
-        running5.forEach(p => {
-          const item = document.createElement('div');
-          item.className = 'project-item';
+      runningProjects.forEach(p => {
+        const item = document.createElement('div');
+        item.className = 'project-item';
 
-          const img = document.createElement('img');
-          img.src = p.image;
-          img.alt = p.name;
-          img.onerror = () => img.src = 'assets/icons/project-management.png';
-          item.appendChild(img);
+        const img = document.createElement('img');
+        img.src = p.image || 'assets/icons/project-management.png';
+        img.alt = p.name;
+        img.onerror = () => img.src = 'assets/icons/project-management.png';
+        item.appendChild(img);
 
-          const txt = document.createElement('div');
-          const name = document.createElement('p');
-          name.textContent = p.name;
-          txt.appendChild(name);
+        const txt = document.createElement('div');
+        const name = document.createElement('p');
+        name.textContent = p.name;
+        txt.appendChild(name);
 
-          const due = document.createElement('span');
-          due.className = 'due-date';
-          due.textContent = randomDue();
-          txt.appendChild(due);
+        const due = document.createElement('span');
+        due.className = 'due-date';
+        due.textContent = getDueDate(p);
+        txt.appendChild(due);
 
-          item.appendChild(txt);
-          card7.appendChild(item);
-        });
-      }
+        item.appendChild(txt);
+        card7.appendChild(item);
+      });
     }
+  }
 
-    /* ---------- 3. GAUGE CHART ---------- */
+  /* ---------- 3. GAUGE CHART WITH ANIMATION ---------- */
   const canvas = document.getElementById('progressChart');
   if (!canvas) {
     console.warn('progressChart canvas missing – skipping gauge');
@@ -177,10 +218,10 @@ fetch('data/projects.json')
   const sections = [
     { pct: pctDone, color: '#00334E', striped: false, label: 'Completed', percent: Math.round(pctDone * 100) },
     { pct: pctRun,  color: '#5588A3', striped: false, label: 'In Progress', percent: Math.round(pctRun * 100) },
-    { pct: pctPend, color: null,      striped: true,  label: 'Pending',    percent: Math.round(pctPend * 100) }
+    { pct: pctPend, color: pattern,   striped: true,  label: 'Pending',    percent: Math.round(pctPend * 100) }
   ];
 
-  /* ---- animation state ---- */
+   /* ---- animation state ---- */
   let prog = 0, shown = 0, labelAlpha = 0;
   const dur = 2000;
   let startTime = null;
@@ -334,8 +375,62 @@ fetch('data/projects.json')
   window.addEventListener('load', () => {
     setTimeout(() => requestAnimationFrame(draw), 700);
   });
-    })
-    .catch(err => console.error('Projects load error:', err));
+}
+function showAddProjectModal(projects) {
+  const modal = document.createElement('div');
+  modal.className = 'modal';
+  modal.innerHTML = `
+    <div class="modal-content">
+      <span class="close-modal">&times;</span>
+      <h2>Add New Project</h2>
+      <form id="projectForm">
+        <label for="projectName">Project Name:</label>
+        <input type="text" id="projectName" required>
+        <label for="clientName">Client Name:</label>
+        <input type="text" id="clientName" required>
+        <label for="dueDate">Due Date:</label>
+        <input type="date" id="dueDate" required>
+        <button type="submit" class="btn-primary">Save</button>
+      </form>
+    </div>
+  `;
+  document.body.appendChild(modal);
+
+  // Show modal with animation
+  setTimeout(() => modal.classList.add('show'), 10);
+
+  const close = modal.querySelector('.close-modal');
+  close.addEventListener('click', () => {
+    modal.classList.remove('show');
+    setTimeout(() => modal.remove(), 300);
+  });
+
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      modal.classList.remove('show');
+      setTimeout(() => modal.remove(), 300);
+    }
+  });
+
+  const form = document.getElementById('projectForm');
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const newProject = {
+      name: document.getElementById('projectName').value,
+      client: document.getElementById('clientName').value, // Optional: Store client if needed
+      dueDate: document.getElementById('dueDate').value,
+      status: 'running', // Default status
+      image: 'assets/icons/project-management.png' // Default image
+    };
+    projects.push(newProject);
+    localStorage.setItem('projects', JSON.stringify(projects));
+    modal.classList.remove('show');
+    setTimeout(() => {
+      modal.remove();
+      populateDashboard(projects); // Refresh dashboard
+    }, 300);
+  });
+}
 
 
 // data teams
@@ -1007,4 +1102,152 @@ document.addEventListener('DOMContentLoaded', () => {
             closeSidebar();
         }
     });
+});
+
+// ====================== ADD TASK MODAL ======================
+function showAddTaskModal(preselectedStatus = 'to do') {
+  const modal = document.createElement('div');
+  modal.className = 'modal';
+  modal.innerHTML = `
+    <div class="modal-content">
+      <span class="close-modal">×</span>
+      <h2>Add New Task</h2>
+      <form id="addTaskForm">
+        <label for="taskName">Task Name <span style="color:red">*</span></label>
+        <input type="text" id="taskName" required placeholder="e.g. Design homepage mockup">
+
+        <label for="taskDesc">Description</label>
+        <textarea id="taskDesc" rows="3" placeholder="Brief description of the task..."></textarea>
+
+        <label for="taskDueDate">Due Date</label>
+        <input type="datetime-local" id="taskDueDate">
+
+        <label for="taskStatus">Status <span style="color:red">*</span></label>
+        <select id="taskStatus" required>
+          <option value="to do"     ${preselectedStatus === 'to do' ? 'selected' : ''}>To Do</option>
+          <option value="in progress" ${preselectedStatus === 'in progress' ? 'selected' : ''}>In Progress</option>
+          <option value="done"       ${preselectedStatus === 'done' ? 'selected' : ''}>Done</option>
+          <option value="pending"    ${preselectedStatus === 'pending' ? 'selected' : ''}>Pending</option>
+        </select>
+
+        <div class="modal-actions" style="margin-top:20px;">
+          <button type="button" class="btn-secondary close-modal-btn">Cancel</button>
+          <button type="submit" class="btn-primary">Add Task</button>
+        </div>
+      </form>
+    </div>
+  `;
+  document.body.appendChild(modal);
+
+  // Show modal
+  setTimeout(() => modal.classList.add('show'), 10);
+
+  // Close handlers
+  const closeModal = () => {
+    modal.classList.remove('show');
+    setTimeout(() => modal.remove(), 300);
+  };
+
+  modal.querySelectorAll('.close-modal, .close-modal-btn').forEach(el => {
+    el.addEventListener('click', closeModal);
+  });
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) closeModal();
+  });
+
+  // Form submit
+  modal.querySelector('#addTaskForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const newTask = {
+      id: Date.now(), // simple unique ID
+      name: document.getElementById('taskName').value.trim(),
+      description: document.getElementById('taskDesc').value.trim() || 'No description',
+      status: document.getElementById('taskStatus').value,
+      due_date: document.getElementById('taskDueDate').value || null,
+      project_id: 1, // you can make this dynamic later
+      member: null,
+      created_at: new Date().toISOString()
+    };
+
+    // Add to global tasks array
+    tasks.push(newTask);
+
+    // Save to localStorage (optional backup)
+    localStorage.setItem('tasks_backup', JSON.stringify(tasks));
+
+    // Find correct column and append card
+    let targetColumn;
+    switch (newTask.status) {
+      case 'to do':      targetColumn = document.querySelector('.to-do'); break;
+      case 'in progress': targetColumn = document.querySelector('.in-progress'); break;
+      case 'done':       targetColumn = document.querySelector('.done'); break;
+      case 'pending':    targetColumn = document.querySelector('.pending'); break;
+    }
+
+    if (targetColumn) {
+      // Remove "No tasks." message if exists
+      const emptyMsg = targetColumn.querySelector('p');
+      if (emptyMsg && emptyMsg.textContent === 'No tasks.') emptyMsg.remove();
+
+      // Create and append the card
+      createTaskCard(newTask, targetColumn);
+      updateColumnCounts();
+    }
+
+    closeModal();
+  });
+}
+
+// Helper: create a single task card (extracted so we can reuse)
+function createTaskCard(task, column) {
+  const card = document.createElement('div');
+  card.className = 'task';
+  card.draggable = true;
+  card.dataset.taskId = task.id;
+
+  card.innerHTML = `
+    <div class="task-head">
+      <img src="assets/icons/more-options.png" alt="More options">
+    </div>
+    <h4>${task.name}</h4>
+    <p>${task.description}</p>
+    <div class="details">
+      ${task.due_date ? `<span class="due-date">${formatDueDate(task.due_date)}</span>` : ''}
+      ${task.due_date && !(task.status === 'done' || task.status === 'pending') ? 
+        `<span class="deadline ${getDeadlineInfo(task.due_date).className || ''}">
+          ${getDeadlineInfo(task.due_date).text}
+        </span>` : ''}
+    </div>
+  `;
+
+  // Drag start
+  card.addEventListener('dragstart', e => {
+    e.dataTransfer.setData('text/plain', task.id);
+  });
+
+  // More menu (reuse your existing createMenu function if you have one)
+  const moreImg = card.querySelector('.task-head img');
+  const menu = createMenu(task, card, moreImg, updateColumnCounts);
+  card.appendChild(menu);
+
+  column.appendChild(card);
+}
+
+// Add Task Buttons – Header + Per Column
+document.querySelectorAll('.task-header .btn-primary, .tasks .actions img[src="assets/icons/add.png"]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    let status = 'to do'; // default
+
+    // If clicked inside a column → detect which one
+    const column = btn.closest('.to-do, .in-progress, .done, .pending');
+    if (column) {
+      if (column.classList.contains('to-do')) status = 'to do';
+      else if (column.classList.contains('in-progress')) status = 'in progress';
+      else if (column.classList.contains('done')) status = 'done';
+      else if (column.classList.contains('pending')) status = 'pending';
+    }
+
+    showAddTaskModal(status);
+  });
 });

@@ -1059,6 +1059,16 @@ canvas {
         display: flex;
         flex-direction: column;
     }
+    .tasks{
+        justify-content: center;
+        align-items: center;
+    }
+     .to-do,
+    .in-progress,
+    .done,
+    .pending{
+        width: 95%;
+    }
 }
 
 @media (max-width: 900px) {
@@ -1200,4 +1210,299 @@ canvas {
         width: 100%;
         flex-direction: column;
     }
+}
+
+/* Modal Styles */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    background-color: var(--clr-white);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 51, 78, 0.3);
+    width: 90%;
+    max-width: 400px;
+    position: relative;
+    transform: translateY(-50px);
+    transition: transform 0.3s ease;
+}
+
+.modal.show .modal-content {
+    transform: translateY(0);
+}
+
+.close-modal {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--clr-gray-dark);
+    transition: color 0.3s ease;
+}
+
+.close-modal:hover {
+    color: var(--clr-dark);
+}
+
+.modal-content h2 {
+    margin-bottom: 20px;
+    color: var(--clr-heading);
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+#projectForm {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+#projectForm label {
+    font-weight: 500;
+    color: var(--clr-text);
+    margin-bottom: 5px;
+}
+
+#projectForm input {
+    padding: 10px;
+    border: 1px solid var(--clr-border);
+    border-radius: 5px;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+#projectForm input:focus {
+    border-color: var(--clr-primary);
+}
+
+#projectForm button {
+    margin-top: 10px;
+    width: 100%;
+}
+
+/* Responsive for Modal */
+@media (max-width: 480px) {
+    .modal-content {
+        width: 95%;
+        padding: 15px;
+    }
+
+    .modal-content h2 {
+        font-size: 1.3rem;
+    }
+}
+/* ====================== ADD TASK MODAL – PREMIUM DESIGN ====================== */
+#addTaskForm {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: 10px;
+}
+
+#addTaskForm label {
+  font-weight: 600;
+  color: var(--clr-heading);
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+#addTaskForm label span {
+  color: #e74c3c;
+}
+
+#addTaskForm input,
+#addTaskForm textarea,
+#addTaskForm select {
+  padding: 14px 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  font-size: 16px;
+  font-family: 'Montserrat', sans-serif;
+  background-color: #fbfbfb;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+#addTaskForm input:focus,
+#addTaskForm textarea:focus,
+#addTaskForm select:focus {
+  border-color: var(--clr-primary);
+  background-color: #fff;
+  box-shadow: 0 0 0 4px rgba(52, 97, 127, 0.15);
+  transform: translateY(-1px);
+}
+
+#addTaskForm textarea {
+  resize: vertical;
+  min-height: 100px;
+  line-height: 1.5;
+}
+
+#addTaskForm select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%2334617F' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  padding-right: 40px;
+}
+
+/* Modal Content – Enhanced */
+.modal-content {
+  background: linear-gradient(145deg, #ffffff, #f8f9fa);
+  border-radius: 20px;
+  padding: 32px 28px;
+  max-width: 500px;
+  width: 92%;
+  box-shadow: 
+    0 20px 40px rgba(0, 51, 78, 0.18),
+    0 10px 20px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.modal-content::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 6px;
+  background: linear-gradient(90deg, 
+    var(--clr-dark), 
+    var(--clr-primary), 
+    var(--clr-navy-deep)
+  );
+}
+
+/* Title */
+.modal-content h2 {
+  text-align: center;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--clr-dark);
+  margin: 0 0 24px 0;
+  position: relative;
+}
+
+.modal-content h2::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--clr-primary), var(--clr-dark));
+  margin: 12px auto 0;
+  border-radius: 2px;
+}
+
+/* Close Button – Modern X */
+.close-modal {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  width: 36px;
+  height: 36px;
+  background: rgba(0, 51, 78, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: 300;
+  color: var(--clr-heading);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.close-modal:hover {
+  background: rgba(231, 76, 60, 0.15);
+  color: #e74c3c;
+  transform: rotate(90deg) scale(1.1);
+}
+
+/* Buttons in Modal */
+.modal-actions {
+  display: flex;
+  gap: 14px;
+  margin-top: 10px;
+}
+
+.modal-actions button {
+  flex: 1;
+  padding: 14px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 14px;
+  transition: all 0.3s ease;
+}
+
+.modal-actions .btn-secondary {
+  background: #f1f3f5;
+  color: var(--clr-heading);
+  border: 2px solid #ddd;
+}
+
+.modal-actions .btn-secondary:hover {
+  background: #e9ecef;
+  border-color: var(--clr-primary);
+  color: var(--clr-primary);
+}
+
+.modal-actions .btn-primary {
+  background: linear-gradient(140deg, var(--clr-dark), var(--clr-primary));
+  box-shadow: 0 6px 15px rgba(0, 51, 78, 0.3);
+}
+
+.modal-actions .btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 51, 78, 0.4);
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .modal-content {
+    padding: 28px 20px;
+    border-radius: 16px;
+  }
+
+  .modal-content h2 {
+    font-size: 24px;
+  }
+
+  #addTaskForm input,
+  #addTaskForm textarea,
+  #addTaskForm select {
+    padding: 12px 14px;
+    font-size: 15px;
+  }
+
+  .modal-actions {
+    flex-direction: column;
+  }
+
+  .modal-actions button {
+    padding: 14px;
+  }
 }
