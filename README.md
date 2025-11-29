@@ -1,6 +1,6 @@
 # flowBoard - Tableau de bord de gestion de projets
 
-[flowBoard Logo](assets/images/logo.jpg)
+![flowBoard Logo](assets/images/logo.jpg)
 
 ## Aperçu
 
@@ -26,7 +26,7 @@ Parfait pour les petites équipes ou les indépendants qui recherchent une alter
 ## Captures d’écran
 
 ### Tableau de bord
-[Dashboard](assets/screenshots/dashboard.png)
+![Dashboard](assets/screenshots/dashboard.png)
 
 ### Board des tâches
 ![Tasks Board](assets/screenshots/tasks.png)
